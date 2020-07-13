@@ -1,4 +1,20 @@
 Rails.application.routes.draw do
+  root 'products#index'
+
+  resources :products, only: [:index, :show]
+
+  resources :stocks, only: [] do
+    member do
+      get :come_in
+      post :come_in
+      get :come_out
+      post :come_out
+      get :adjust
+      post :adjust
+      get :transfer
+      post :transfer
+    end
+  end
+
   mount RailsEventStore::Browser => '/res' if Rails.env.development?
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
