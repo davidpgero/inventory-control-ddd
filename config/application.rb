@@ -17,6 +17,6 @@ module InventoryControlDdd
     # the framework and any gems in your application.
 
     config.paths.add "lib",       eager_load: true
-    config.paths.add 'inventory_control/lib', eager_load: true
+    config.paths.add 'inventory_controlling/lib', eager_load: true
   end
 end
