@@ -16,11 +16,13 @@ Rails.configuration.to_prepare do
     store.subscribe(Stocks::OnStockCameIn, to: [InventoryControl::StockCameIn])
     store.subscribe(Stocks::OnStockCameOut, to: [InventoryControl::StockCameOut])
     store.subscribe(Stocks::OnStockAdjusted, to: [InventoryControl::StockAdjusted])
+    store.subscribe(Stocks::OnStockTransferred, to: [InventoryControl::StockTransferred])
   end
 
   Rails.configuration.command_bus.tap do |bus|
     bus.register(InventoryControl::ComeInStock, InventoryControl::OnComeInStock.new)
     bus.register(InventoryControl::ComeOutStock, InventoryControl::OnComeOutStock.new)
     bus.register(InventoryControl::AdjustStock, InventoryControl::OnAdjustStock.new)
+    bus.register(InventoryControl::TransferStock, InventoryControl::OnTransferStock.new)
   end
 end

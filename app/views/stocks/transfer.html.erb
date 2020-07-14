@@ -1,0 +1,20 @@
+<h1>Transfer Stock</h1>
+
+<%= form_tag({controller: "stocks", action: "transfer"}, method: "post") do %>
+  <%= hidden_field(:product_uid, @product_id) %>
+  <%= hidden_field_tag(:location_id, @location_id) %>
+  <%= hidden_field_tag(:quantity, @quantity) %>
+  <p>
+    <%= @location.name %>
+  </p>
+  <p>Quantity
+    <%= number_field_tag(:quantity, @quantity, { disabled: true }) %>
+  </p>
+
+  <p>New Location:
+    <%= select_tag(:new_location_id, options_from_collection_for_select(@locations, :id, :name)) %>
+  </p>
+
+  <%= submit_tag("Transfer", class: "btn btn-primary") %>
+  <%= link_to 'Back', product_path, class: "btn btn-default" %>
+<% end %>

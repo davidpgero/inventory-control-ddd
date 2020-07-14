@@ -34,7 +34,7 @@ module InventoryControl
     def transfer(location_id, quantity, new_location_id)
       raise MissingLocation unless location_id && new_location_id
       raise MissingQuantity unless quantity
-      apply StockTransferred.new(data: { product_id: @product_id, location_id: location_id, quantity: quantity, new_location_id: new_location_id } )
+      apply StockTransferred.new(data: { product_id: @id, location_id: location_id, quantity: quantity, new_location_id: new_location_id } )
     end
 
     on StockCameIn do |event|
@@ -55,6 +55,7 @@ module InventoryControl
       @new_quantity = event.data[:new_quantity]
       @current_stock = find_stock(@location_id, @quantity)
       return unless @current_stock
+      return if @quantity == @new_quantity
     end
 
     on StockTransferred do |event|
@@ -63,6 +64,7 @@ module InventoryControl
       @quantity = event.data[:quantity]
       @current_stock = find_stock(@location_id, @quantity)
       return unless @current_stock
+      return if @location_id == @new_location_id
     end
 
     private
@@ -76,7 +78,7 @@ module InventoryControl
     end
 
     def adjust_stock
-      @stocks.delete(@current_stock, @quantity)
+      @stocks.delete(@current_stock)
 
       @stocks << Stock.new(@id, @location_id, @new_quantity)
     end
@@ -84,7 +86,7 @@ module InventoryControl
     def transfer_stock
       @stocks.delete(@current_stock)
 
-      @stocks << Stock.new(@id, @new_location_id, @current_stock.quantity)
+      @stocks << Stock.new(@id, @new_location_id, @quantity)
     end
 
     def find_stock(location_id, quantity = nil)

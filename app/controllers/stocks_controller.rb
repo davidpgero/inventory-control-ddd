@@ -8,7 +8,6 @@ class StocksController < ApplicationController
     else
       @product_id = id
       @locations = Stocks::Location.all
-      @stock = Stocks::Stock.new(product_id: @product_id)
     end
   end
 
@@ -35,10 +34,19 @@ class StocksController < ApplicationController
   end
 
   def transfer
-    cmd = InventoryControl::TransferStock.new(product_id: params[:id], location_id: params[:location_id], quantity: params[:quantity], new_location_id: params[:new_location_id])
-    command_bus.(cmd)
+    if request.post?
+      cmd = InventoryControl::TransferStock.new(product_id: id, location_id: location_id, quantity: quantity, new_location_id: params[:new_location_id].to_i)
+      command_bus.(cmd)
 
-    redirect_to product_path(product_uid(cmd)), notice: 'Stock was transferred successfully.'
+      redirect_to product_path(product_uid(cmd)), notice: 'Stock was transferred successfully.'
+    else
+      @product_id = id
+      @location_id = location_id
+      @quantity = quantity
+
+      @location = Stocks::Location.find(@location_id)
+      @locations = Stocks::Location.all
+    end
   end
 
   private
