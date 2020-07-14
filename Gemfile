@@ -33,11 +33,12 @@ group :development do
 end
 
 group :test do
-  # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 2.15'
   gem 'selenium-webdriver'
-  # Easy installation and use of chromedriver to run system tests with Chrome
-  gem 'chromedriver-helper'
+  gem 'webdrivers'
+  gem 'simplecov', require: false
+  gem 'mutant-minitest', github: 'mbj/mutant', ref: '027b3d8f7508fe4e460ed999dd91f2ac3edd136b'
+  gem 'mutant-license',  source: 'https://oss:7AXfeZdAfCqL1PvHm2nvDJO6Zd9UW8IK@gem.mutant.dev'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
