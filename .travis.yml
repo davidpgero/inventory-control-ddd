@@ -7,4 +7,4 @@ env:
     - RAILS_ENV=test
 script:
   - bundle exec rake db:schema:load
-  - rails test
+  - bundle exec rails test
