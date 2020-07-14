@@ -44,7 +44,8 @@ module InventoryControl
 
     on StockCameOut do |event|
       @location_id = event.data[:location_id]
-      @current_stock = find_stock(@location_id)
+      @quantity = event.data[:quantity]
+      @current_stock = find_stock(@location_id, @quantity)
       return unless @current_stock
     end
 

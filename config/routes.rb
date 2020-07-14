@@ -7,7 +7,6 @@ Rails.application.routes.draw do
     member do
       get :come_in
       post :come_in
-      get :come_out
       post :come_out
       get :adjust
       post :adjust
