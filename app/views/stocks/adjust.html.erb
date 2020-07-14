@@ -1,0 +1,19 @@
+<h1>Adjust Stock</h1>
+
+<%= form_tag({controller: "stocks", action: "adjust"}, method: "post") do %>
+  <%= hidden_field(:product_uid, @product_id) %>
+  <%= hidden_field_tag(:location_id, @location_id) %>
+  <%= hidden_field_tag(:quantity, @quantity) %>
+  <p>
+    <%= @location.name %>
+  </p>
+  <p>Quantity
+    <%= number_field_tag(:quantity, @quantity, { disabled: true }) %>
+  </p>
+  <p>New Quantity
+    <%= number_field_tag(:new_quantity, min: 0) %>
+  </p>
+
+  <%= submit_tag("Adjust", class: "btn btn-primary") %>
+  <%= link_to 'Back', product_path, class: "btn btn-default" %>
+<% end %>

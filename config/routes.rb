@@ -7,9 +7,12 @@ Rails.application.routes.draw do
     member do
       get :come_in
       post :come_in
+
       post :come_out
+
       get :adjust
       post :adjust
+
       get :transfer
       post :transfer
     end

@@ -4,7 +4,7 @@ module InventoryControl
 
     def call(command)
       with_aggregate(Product, command.aggregate_id) do |product|
-        product.adjust_stock
+        product.adjust(command.location_id, command.quantity, command.new_quantity)
       end
     end
   end

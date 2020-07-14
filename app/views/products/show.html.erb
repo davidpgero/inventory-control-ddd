@@ -23,7 +23,7 @@
       <td colspan="3"><%= stock.quantity %></td>
       <td colspan="3">
         <%= link_to 'Stock Out', come_out_stock_path(@product.uid, location_id: stock.location_id, quantity: stock.quantity), method: :post %> |
-        <%= link_to 'Adjust', products_path %> |
+        <%= link_to 'Adjust', adjust_stock_path(@product.uid, location_id: stock.location_id, quantity: stock.quantity) %> |
         <%= link_to 'Transfer', products_path %> |
       </td>
     </tr>

@@ -4,9 +4,9 @@ class StocksController < ApplicationController
       cmd = InventoryControl::ComeInStock.new(product_id: id, location_id: location_id, quantity: quantity)
       command_bus.(cmd)
 
-      redirect_to product_path(Stocks::Product.find_by_uid(cmd.product_id).uid), notice: 'Stock was added successfully.'
+      redirect_to product_path(product_uid(cmd)), notice: 'Stock was added successfully.'
     else
-      @product_id = params[:id]
+      @product_id = id
       @locations = Stocks::Location.all
       @stock = Stocks::Stock.new(product_id: @product_id)
     end
@@ -16,21 +16,29 @@ class StocksController < ApplicationController
     cmd = InventoryControl::ComeOutStock.new(product_id: id, location_id: location_id, quantity: quantity)
     command_bus.(cmd)
 
-    redirect_to product_path(Stocks::Product.find_by_uid(cmd.product_id).uid), notice: 'Stock was came out successfully.'
+    redirect_to product_path(product_uid(cmd)), notice: 'Stock was came out successfully.'
   end
 
   def adjust
-    cmd = InventoryControl::AdjustStock.new(product_id: params[:id], location_id: params[:location_id], quantity: params[:quantity], new_quantity: params[:new_quantity])
-    command_bus.(cmd)
+    if request.post?
+      cmd = InventoryControl::AdjustStock.new(product_id: id, location_id: location_id, quantity: quantity, new_quantity: params[:new_quantity])
+      command_bus.(cmd)
 
-    redirect_to product_path(InventoryControl::Product.find_by_uid(cmd.product_id)), notice: 'Stock was adjusted successfully.'
+      redirect_to product_path(product_uid(cmd)), notice: 'Stock was adjusted successfully.'
+    else
+      @product_id = id
+      @location_id = location_id
+      @quantity = quantity
+
+      @location = Stocks::Location.find(@location_id)
+    end
   end
 
   def transfer
     cmd = InventoryControl::TransferStock.new(product_id: params[:id], location_id: params[:location_id], quantity: params[:quantity], new_location_id: params[:new_location_id])
     command_bus.(cmd)
 
-    redirect_to product_path(InventoryControl::Product.find_by_uid(cmd.product_id)), notice: 'Stock was transferred successfully.'
+    redirect_to product_path(product_uid(cmd)), notice: 'Stock was transferred successfully.'
   end
 
   private
@@ -45,5 +53,9 @@ class StocksController < ApplicationController
 
   def quantity
     params[:quantity].to_i
+  end
+
+  def product_uid(cmd)
+    Stocks::Product.find_by_uid(cmd.product_id).uid
   end
 end
