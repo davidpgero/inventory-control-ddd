@@ -1,0 +1,9 @@
+{
+  "name": "Sample Inventory-Control CQRS/ES with RailsEventStore",
+  "description": "Sample Inventory-Control Application featuring RailsEventStore usage",
+  "repository": "https://github.com/davidpgero/inventory-control-ddd",
+  "keywords": ["rails", "ruby", "rails_event_store", "ruby_event_store", "cqrs", "event-sourcing", "ddd"],
+  "scripts": {
+    "postdeploy": "bundle exec rake db:schema:load"
+  }
+}
