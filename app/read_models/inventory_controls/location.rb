@@ -1,4 +1,4 @@
-module Stocks
+module InventoryControls
   class Location < ApplicationRecord
     self.table_name = "locations"
 

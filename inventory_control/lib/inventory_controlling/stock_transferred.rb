@@ -1,4 +1,4 @@
-module InventoryControl
+module InventoryControlling
   class StockTransferred < Event
     attribute :product_id, Types::UUID
     attribute :location_id, Types::ID

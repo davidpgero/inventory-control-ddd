@@ -12,7 +12,7 @@
   { uid: SecureRandom.uuid, name: "Inspire Basket"},
   { uid: SecureRandom.uuid, name: "Monster Basket"},
 ].each do |line|
-  Stocks::Product.create(line)
+  InventoryControls::Product.create(line)
 end
 
 [
@@ -20,5 +20,5 @@ end
   { name: "Expedition Location", address: "2565  Goldcliff Circle"},
   { name: "Pilot Location", address: "52  Gnatty Creek Road"},
 ].each do |line|
-  Stocks::Location.create(line)
+  InventoryControls::Location.create(line)
 end

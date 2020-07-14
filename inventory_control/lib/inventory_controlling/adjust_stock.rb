@@ -1,5 +1,5 @@
-module InventoryControl
-  class StockAdjusted < Event
+module InventoryControlling
+  class AdjustStock < Command
     attribute :product_id, Types::UUID
     attribute :location_id, Types::ID
     attribute :quantity, Types::Integer

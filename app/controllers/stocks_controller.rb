@@ -1,18 +1,18 @@
 class StocksController < ApplicationController
   def come_in
     if request.post?
-      cmd = InventoryControl::ComeInStock.new(product_id: id, location_id: location_id, quantity: quantity)
+      cmd = InventoryControlling::ComeInStock.new(product_id: id, location_id: location_id, quantity: quantity)
       command_bus.(cmd)
 
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was added successfully.'
     else
       @product_id = id
-      @locations = Stocks::Location.all
+      @locations = InventoryControls::Location.all
     end
   end
 
   def come_out
-    cmd = InventoryControl::ComeOutStock.new(product_id: id, location_id: location_id, quantity: quantity)
+    cmd = InventoryControlling::ComeOutStock.new(product_id: id, location_id: location_id, quantity: quantity)
     command_bus.(cmd)
 
     redirect_to product_path(product_uid(cmd)), notice: 'Stock was came out successfully.'
@@ -20,7 +20,7 @@ class StocksController < ApplicationController
 
   def adjust
     if request.post?
-      cmd = InventoryControl::AdjustStock.new(product_id: id, location_id: location_id, quantity: quantity, new_quantity: params[:new_quantity])
+      cmd = InventoryControlling::AdjustStock.new(product_id: id, location_id: location_id, quantity: quantity, new_quantity: params[:new_quantity])
       command_bus.(cmd)
 
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was adjusted successfully.'
@@ -29,13 +29,13 @@ class StocksController < ApplicationController
       @location_id = location_id
       @quantity = quantity
 
-      @location = Stocks::Location.find(@location_id)
+      @location = InventoryControls::Location.find(@location_id)
     end
   end
 
   def transfer
     if request.post?
-      cmd = InventoryControl::TransferStock.new(product_id: id, location_id: location_id, quantity: quantity, new_location_id: params[:new_location_id].to_i)
+      cmd = InventoryControlling::TransferStock.new(product_id: id, location_id: location_id, quantity: quantity, new_location_id: params[:new_location_id].to_i)
       command_bus.(cmd)
 
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was transferred successfully.'
@@ -44,8 +44,8 @@ class StocksController < ApplicationController
       @location_id = location_id
       @quantity = quantity
 
-      @location = Stocks::Location.find(@location_id)
-      @locations = Stocks::Location.all
+      @location = InventoryControls::Location.find(@location_id)
+      @locations = InventoryControls::Location.all
     end
   end
 
@@ -64,6 +64,6 @@ class StocksController < ApplicationController
   end
 
   def product_uid(cmd)
-    Stocks::Product.find_by_uid(cmd.product_id).uid
+    InventoryControls::Product.find_by_uid(cmd.product_id).uid
   end
 end

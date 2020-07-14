@@ -1,4 +1,4 @@
-module InventoryControl
+module InventoryControlling
   class OnTransferStock
     include CommandHandler
 

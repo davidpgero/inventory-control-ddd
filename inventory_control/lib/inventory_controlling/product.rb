@@ -1,6 +1,6 @@
 require 'aggregate_root'
 
-module InventoryControl
+module InventoryControlling
   class Product
     include AggregateRoot
 

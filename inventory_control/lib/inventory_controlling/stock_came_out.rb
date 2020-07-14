@@ -1,4 +1,4 @@
-module InventoryControl
+module InventoryControlling
   class StockCameOut < Event
     attribute :product_id, Types::UUID
     attribute :location_id, Types::ID

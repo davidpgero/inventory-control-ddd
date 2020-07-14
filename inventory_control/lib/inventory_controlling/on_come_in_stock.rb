@@ -1,4 +1,4 @@
-module InventoryControl
+module InventoryControlling
   class OnComeInStock
     include CommandHandler
 

@@ -1,4 +1,4 @@
-module InventoryControl
+module InventoryControlling
   class Stock
     include Comparable
     attr_reader :product_id

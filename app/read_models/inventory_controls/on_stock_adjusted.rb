@@ -1,4 +1,4 @@
-module Stocks
+module InventoryControls
   class OnStockAdjusted
     def call(event)
       Stock.transaction do

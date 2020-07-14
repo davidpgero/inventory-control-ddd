@@ -1,4 +1,4 @@
-module Stocks
+module InventoryControls
   class OnStockTransferred
     def call(event)
       Stock.transaction do

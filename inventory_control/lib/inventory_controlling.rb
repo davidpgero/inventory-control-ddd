@@ -1,0 +1,20 @@
+module InventoryControlling
+end
+
+require_dependency 'inventory_controlling/stock_came_in'
+require_dependency 'inventory_controlling/stock_came_out'
+require_dependency 'inventory_controlling/stock_transferred'
+require_dependency 'inventory_controlling/stock_adjusted'
+
+require_dependency 'inventory_controlling/come_in_stock'
+require_dependency 'inventory_controlling/come_out_stock'
+require_dependency 'inventory_controlling/transfer_stock'
+require_dependency 'inventory_controlling/adjust_stock'
+
+require_dependency 'inventory_controlling/on_come_in_stock'
+require_dependency 'inventory_controlling/on_come_out_stock'
+require_dependency 'inventory_controlling/on_transfer_stock'
+require_dependency 'inventory_controlling/on_adjust_stock'
+
+require_dependency 'inventory_controlling/product'
+require_dependency 'inventory_controlling/stock'
