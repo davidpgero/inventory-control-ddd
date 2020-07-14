@@ -1,24 +1,7 @@
-# README
+# inventory-control-ddd
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+CQRS with Event Sourcing sample app using [Rails Event Store](https://railseventstore.org). See it [live](https://inventory-control-ddd.herokuapp.com/).
 
-Things you may want to cover:
+[![Build Status](https://travis-ci.com/davidpgero/inventory-control-ddd.svg?branch=master)](https://travis-ci.com/davidpgero/inventory-control-ddd)
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
