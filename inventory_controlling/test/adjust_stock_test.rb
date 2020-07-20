@@ -6,16 +6,21 @@ module InventoryControlling
 
     cover 'InventoryControlling::AdjustStock'
 
-    test "stock is came out" do
-      location = InventoryControls::Location.create(name: "test_location")
+    test "stock is adjusted" do
       aggregate_id = SecureRandom.uuid
-      quantity = rand(100)
-      new_quantity = rand(100)
-
-
       stream = "InventoryControlling::Product$#{aggregate_id}"
-      published = act(stream, AdjustStock.new(product_id: aggregate_id, location_id: location.id, quantity: quantity, new_quantity: new_quantity))
-      assert_changes(published, [StockAdjusted.new(data: {product_id: aggregate_id, location_id: location.id, quantity: quantity, new_quantity: new_quantity})])
+      location = InventoryControls::Location.create(name: "test_location")
+      location_id = location.id
+      quantity = rand(1..20)
+      new_quantity = rand(21..100)
+
+      arrange(stream, [
+          StockCameIn.new(data: {product_id: aggregate_id, location_id: location_id, quantity: quantity})
+      ])
+
+      cmd = AdjustStock.call(product_id: aggregate_id, location_id: location_id, quantity: quantity, new_quantity: new_quantity)
+      published = act(stream, cmd)
+      assert_changes(published, [StockAdjusted.new(data: {product_id: aggregate_id, location_id: location_id, quantity: quantity, new_quantity: new_quantity})])
     end
   end
 end

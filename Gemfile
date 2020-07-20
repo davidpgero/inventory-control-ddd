@@ -15,6 +15,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'dry-struct'
 gem 'dry-types'
+gem 'dry-schema'
 
 group :development, :test do
   gem 'sqlite3'

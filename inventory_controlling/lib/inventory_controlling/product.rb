@@ -4,8 +4,7 @@ module InventoryControlling
   class Product
     include AggregateRoot
 
-    MissingLocation = Class.new(StandardError)
-    MissingQuantity = Class.new(StandardError)
+    StockNotFound = Class.new(StandardError)
 
     def initialize(id)
       @id = id
@@ -14,57 +13,51 @@ module InventoryControlling
     end
 
     def come_in(location_id, quantity)
-      raise MissingLocation unless location_id
-      raise MissingQuantity unless quantity
       apply StockCameIn.new(data: { product_id: @id, location_id: location_id, quantity: quantity } )
     end
 
     def come_out(location_id, quantity)
-      raise MissingLocation unless location_id
-      raise MissingQuantity unless quantity
+      @current_stock = find_stock(location_id, quantity)
+      raise StockNotFound unless @current_stock
       apply StockCameOut.new(data: { product_id: @id, location_id: location_id, quantity: quantity } )
     end
 
     def adjust(location_id, quantity, new_quantity)
-      raise MissingLocation unless location_id
-      raise MissingQuantity unless quantity && new_quantity
+      @current_stock = find_stock(location_id, quantity)
+      raise StockNotFound unless @current_stock
       apply StockAdjusted.new(data: { product_id: @id, location_id: location_id, quantity: quantity, new_quantity: new_quantity } )
     end
 
     def transfer(location_id, quantity, new_location_id)
-      raise MissingLocation unless location_id && new_location_id
-      raise MissingQuantity unless quantity
+      @current_stock = find_stock(location_id, quantity)
+      raise StockNotFound unless @current_stock
       apply StockTransferred.new(data: { product_id: @id, location_id: location_id, quantity: quantity, new_location_id: new_location_id } )
     end
 
     on StockCameIn do |event|
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
+      come_in_stock
     end
 
     on StockCameOut do |event|
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
-      @current_stock = find_stock(@location_id, @quantity)
-      return unless @current_stock
+      come_out_stock
     end
 
     on StockAdjusted do |event|
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
       @new_quantity = event.data[:new_quantity]
-      @current_stock = find_stock(@location_id, @quantity)
-      return unless @current_stock
-      return if @quantity == @new_quantity
+      adjust_stock
     end
 
     on StockTransferred do |event|
       @location_id = event.data[:location_id]
       @new_location_id = event.data[:new_location_id]
       @quantity = event.data[:quantity]
-      @current_stock = find_stock(@location_id, @quantity)
-      return unless @current_stock
-      return if @location_id == @new_location_id
+      transfer_stock
     end
 
     private

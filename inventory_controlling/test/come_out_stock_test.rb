@@ -7,13 +7,17 @@ module InventoryControlling
     cover 'InventoryControlling::ComeOutStock'
 
     test "stock is came out" do
-      location = InventoryControls::Location.create(name: "test_location")
       aggregate_id = SecureRandom.uuid
-      quantity = rand(100)
-
-
       stream = "InventoryControlling::Product$#{aggregate_id}"
-      published = act(stream, ComeOutStock.new(product_id: aggregate_id, location_id: location.id, quantity: quantity))
+      quantity = rand(100)
+      location = InventoryControls::Location.create(name: "test_location")
+
+      arrange(stream, [
+          StockCameIn.new(data: {product_id: aggregate_id, location_id: location.id, quantity: quantity})
+      ])
+
+      cmd = ComeOutStock.new(product_id: aggregate_id, location_id: location.id, quantity: quantity)
+      published = act(stream, cmd)
       assert_changes(published, [StockCameOut.new(data: {product_id: aggregate_id, location_id: location.id, quantity: quantity})])
     end
   end
