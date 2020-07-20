@@ -13,10 +13,10 @@ Rails.configuration.to_prepare do
   end
 
   Rails.configuration.event_store.tap do |store|
-    store.subscribe(InventoryControls::OnStockCameIn, to: [InventoryControlling::StockCameIn])
-    store.subscribe(InventoryControls::OnStockCameOut, to: [InventoryControlling::StockCameOut])
-    store.subscribe(InventoryControls::OnStockAdjusted, to: [InventoryControlling::StockAdjusted])
-    store.subscribe(InventoryControls::OnStockTransferred, to: [InventoryControlling::StockTransferred])
+    store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockCameIn])
+    store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockCameOut])
+    store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockAdjusted])
+    store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockTransferred])
   end
 
   Rails.configuration.command_bus.tap do |bus|

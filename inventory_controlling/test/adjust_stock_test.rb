@@ -9,7 +9,8 @@ module InventoryControlling
     test "stock is adjusted" do
       aggregate_id = SecureRandom.uuid
       stream = "InventoryControlling::Product$#{aggregate_id}"
-      location = InventoryControls::Location.create(name: "test_location")
+      product = ::Product.create(uid: aggregate_id, name: "test_product")
+      location = ::Location.create(name: "test_location")
       location_id = location.id
       quantity = rand(1..20)
       new_quantity = rand(21..100)

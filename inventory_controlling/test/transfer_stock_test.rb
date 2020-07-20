@@ -9,8 +9,9 @@ module InventoryControlling
     test "stock is transferred" do
       aggregate_id = SecureRandom.uuid
       stream = "InventoryControlling::Product$#{aggregate_id}"
-      location = InventoryControls::Location.create(name: "test_location")
-      new_location = InventoryControls::Location.create(name: "new_test_location")
+      product = ::Product.create(uid: aggregate_id, name: "test_product")
+      location = ::Location.create(name: "test_location")
+      new_location = ::Location.create(name: "new_test_location")
       quantity = rand(100)
 
       arrange(stream, [

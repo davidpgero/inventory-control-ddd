@@ -9,8 +9,9 @@ module InventoryControlling
     test "stock is came out" do
       aggregate_id = SecureRandom.uuid
       stream = "InventoryControlling::Product$#{aggregate_id}"
+      product = ::Product.create(uid: aggregate_id, name: "test_product")
       quantity = rand(100)
-      location = InventoryControls::Location.create(name: "test_location")
+      location = ::Location.create(name: "test_location")
 
       arrange(stream, [
           StockCameIn.new(data: {product_id: aggregate_id, location_id: location.id, quantity: quantity})

@@ -7,8 +7,9 @@ module InventoryControlling
     cover 'InventoryControlling::ComeInStock'
 
     test "stock is came in" do
-      location = InventoryControls::Location.create(name: "test_location")
+      location = ::Location.create(name: "test_location", address: "test_address")
       aggregate_id = SecureRandom.uuid
+      product = ::Product.create(uid: aggregate_id, name: "test_product")
       quantity = rand(100)
 
 

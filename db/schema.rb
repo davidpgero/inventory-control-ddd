@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_13_121727) do
+ActiveRecord::Schema.define(version: 2020_07_20_131626) do
 
   create_table "event_store_events", id: :string, limit: 36, force: :cascade do |t|
     t.string "event_type", null: false
@@ -45,7 +45,10 @@ ActiveRecord::Schema.define(version: 2020_07_13_121727) do
   create_table "stocks", force: :cascade do |t|
     t.string "product_id"
     t.integer "quantity"
-    t.string "location_id"
+    t.integer "location_id"
+    t.string "product_name"
+    t.string "location_name"
+    t.string "location_address"
   end
 
 end
