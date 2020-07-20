@@ -18,5 +18,6 @@ module InventoryControlDdd
 
     config.paths.add "lib",       eager_load: true
     config.paths.add 'inventory_controlling/lib', eager_load: true
+    config.paths.add 'ordering/lib', eager_load: true
   end
 end

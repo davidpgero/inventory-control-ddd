@@ -24,5 +24,9 @@ Rails.configuration.to_prepare do
     bus.register(InventoryControlling::ComeOutStock, InventoryControlling::OnComeOutStock.new)
     bus.register(InventoryControlling::AdjustStock, InventoryControlling::OnAdjustStock.new)
     bus.register(InventoryControlling::TransferStock, InventoryControlling::OnTransferStock.new)
+
+    bus.register(Ordering::PlaceOrder, Ordering::OnPlaceOrder.new)
+    bus.register(Ordering::PrepareOrder, Ordering::OnPrepareOrder.new)
+    bus.register(Ordering::LeaveOrder, Ordering::OnLeaveOrder.new)
   end
 end
