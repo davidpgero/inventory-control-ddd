@@ -7,7 +7,7 @@ class StocksController < ApplicationController
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was added successfully.'
     else
       @product_id = id
-      @locations = InventoryControls::Location.all
+      @locations = ::Location.all
     end
   end
 
@@ -20,16 +20,13 @@ class StocksController < ApplicationController
 
   def adjust
     if request.post?
-      cmd = InventoryControlling::AdjustStock.new(product_id: id, location_id: location_id, quantity: quantity, new_quantity: params[:new_quantity])
+      cmd = InventoryControlling::AdjustStock.new(product_id: id, location_id: location_id, quantity: quantity, new_quantity: params[:new_quantity].to_i)
       command_bus.(cmd)
 
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was adjusted successfully.'
     else
-      @product_id = id
-      @location_id = location_id
-      @quantity = quantity
-
-      @location = InventoryControls::Location.find(@location_id)
+      @stock = find_stock
+      @location = ::Location.find(@stock.location_id)
     end
   end
 
@@ -40,12 +37,8 @@ class StocksController < ApplicationController
 
       redirect_to product_path(product_uid(cmd)), notice: 'Stock was transferred successfully.'
     else
-      @product_id = id
-      @location_id = location_id
-      @quantity = quantity
-
-      @location = InventoryControls::Location.find(@location_id)
-      @locations = InventoryControls::Location.all
+      @stock = find_stock
+      @locations = ::Location.all
     end
   end
 
@@ -64,6 +57,10 @@ class StocksController < ApplicationController
   end
 
   def product_uid(cmd)
-    InventoryControls::Product.find_by_uid(cmd.product_id).uid
+    ::Product.find_by_uid(cmd.product_id).uid
+  end
+
+  def find_stock
+    InventoryControls::Stock.find_by!(product_id: id, location_id: location_id, quantity: quantity)
   end
 end

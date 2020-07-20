@@ -19,7 +19,7 @@
   <tbody>
   <% @stocks.each do |stock| %>
     <tr>
-      <td colspan="3"><strong><%= stock.location.name %></strong></td>
+      <td colspan="3"><strong><%= stock.location_name %></strong></td>
       <td colspan="3"><%= stock.quantity %></td>
       <td colspan="3">
         <%= link_to 'Stock Out', come_out_stock_path(@product.uid, location_id: stock.location_id, quantity: stock.quantity), method: :post %> |
