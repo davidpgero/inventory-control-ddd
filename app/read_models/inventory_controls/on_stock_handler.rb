@@ -10,6 +10,8 @@ module InventoryControls
         on_stock_adjusted(event)
       when InventoryControlling::StockTransferred
         on_stock_transferred(event)
+      when InventoryControlling::StockReserved
+        on_stock_reserved(event)
       else
         raise ArgumentError(event)
       end
@@ -59,6 +61,19 @@ module InventoryControls
       end
     end
 
+    def on_stock_reserved(event)
+      product = ::Product.find_by!(uid: event.data[:product_id])
+      location = ::Location.find_by!(id: event.data[:location_id])
+      quantity = event.data[:quantity]
+
+      with_current_stock(event) do |current_stock|
+        current_stock.destroy!
+
+        new_stock = new_stock(product, location, quantity, :reserved)
+        new_stock.save!
+      end
+    end
+
     def with_current_stock(event)
       Stock.transaction do
         current_stock = Stock.find_by!(product_id: event.data[:product_id], quantity: event.data[:quantity], location_id: event.data[:location_id])
@@ -66,14 +81,15 @@ module InventoryControls
       end
     end
 
-    def new_stock(product, location, quantity)
+    def new_stock(product, location, quantity, state = :new)
       Stock.new(
           product_id: product.uid,
           product_name: product.name,
           location_id: location.id,
           location_name: location.name,
           location_address: location.address,
-          quantity: quantity
+          quantity: quantity,
+          state: state
       )
     end
   end

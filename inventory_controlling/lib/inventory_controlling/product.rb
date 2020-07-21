@@ -34,6 +34,22 @@ module InventoryControlling
       apply StockTransferred.new(data: { product_id: @id, location_id: location_id, quantity: quantity, new_location_id: new_location_id } )
     end
 
+    def reserve(location_id, quantity)
+      @current_stock = find_stock(location_id, quantity)
+      raise StockNotFound unless @current_stock
+      apply StockReserved.new(data: { product_id: @id, location_id: location_id, quantity: quantity } )
+    end
+
+    def leave(location_id, quantity)
+      @current_stock = find_stock(location_id, quantity)
+      raise StockNotFound unless @current_stock
+      apply StockLeft.new(data: { product_id: @id, location_id: location_id, quantity: quantity } )
+    end
+
+    def reserve_additional(quantity)
+      apply AdditionalStockReserved.new(data: { product_id: @id, quantity: quantity } )
+    end
+
     on StockCameIn do |event|
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
@@ -43,6 +59,7 @@ module InventoryControlling
     on StockCameOut do |event|
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
+      @current_stock = find_stock(@location_id, @quantity)
       come_out_stock
     end
 
@@ -50,6 +67,7 @@ module InventoryControlling
       @location_id = event.data[:location_id]
       @quantity = event.data[:quantity]
       @new_quantity = event.data[:new_quantity]
+      @current_stock = find_stock(@location_id, @quantity)
       adjust_stock
     end
 
@@ -57,7 +75,27 @@ module InventoryControlling
       @location_id = event.data[:location_id]
       @new_location_id = event.data[:new_location_id]
       @quantity = event.data[:quantity]
+      @current_stock = find_stock(@location_id, @quantity)
       transfer_stock
+    end
+
+    on StockReserved do |event|
+      @location_id = event.data[:location_id]
+      @quantity = event.data[:quantity]
+      @current_stock = find_stock(@location_id, @quantity)
+      reserve_stock
+    end
+
+    on StockLeft do |event|
+      @location_id = event.data[:location_id]
+      @quantity = event.data[:quantity]
+      @current_stock = find_stock(@location_id, @quantity)
+      leave_stock
+    end
+
+    on AdditionalStockReserved do |event|
+      @quantity = event.data[:quantity]
+      reserve_additional_stock
     end
 
     private
@@ -73,13 +111,25 @@ module InventoryControlling
     def adjust_stock
       @stocks.delete(@current_stock)
 
-      @stocks << Stock.new(@id, @location_id, @new_quantity)
+      @stocks << Stock.new(@id, @location_id, @new_quantity, @current_stock.state)
     end
 
     def transfer_stock
       @stocks.delete(@current_stock)
 
-      @stocks << Stock.new(@id, @new_location_id, @quantity)
+      @stocks << Stock.new(@id, @new_location_id, @quantity, @current_stock.state)
+    end
+
+    def reserve_stock
+      @current_stock.state = :reserved
+    end
+
+    def leave_stock
+      @current_stock.state = :left
+    end
+
+    def reserve_additional_stock
+      true
     end
 
     def find_stock(location_id, quantity = nil)

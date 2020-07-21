@@ -8,6 +8,8 @@ module InventoryControls
         on_product_stock_came_out(event)
       when InventoryControlling::StockAdjusted
         on_product_stock_adjusted(event)
+      when InventoryControlling::StockReserved
+        on_product_stock_reserved(event)
       else
         raise ArgumentError(event)
       end
@@ -38,6 +40,12 @@ module InventoryControls
       quantity_diff = quantity - new_quantity
       product_stock.quantity -= quantity_diff
 
+      product_stock.save!
+    end
+
+    def on_product_stock_reserved(event)
+      product_stock = ProductStock.find_by(product_id: event.data[:product_id])
+      product_stock.quantity -= event.data[:quantity]
       product_stock.save!
     end
   end

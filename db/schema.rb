@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_21_111511) do
+ActiveRecord::Schema.define(version: 2020_07_21_143432) do
 
   create_table "event_store_events", id: :string, limit: 36, force: :cascade do |t|
     t.string "event_type", null: false
@@ -48,6 +48,13 @@ ActiveRecord::Schema.define(version: 2020_07_21_111511) do
     t.string "state"
   end
 
+  create_table "orders_orders", force: :cascade do |t|
+    t.string "uid"
+    t.string "product_name"
+    t.integer "quantity"
+    t.string "state"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "uid"
     t.string "state"
@@ -61,6 +68,7 @@ ActiveRecord::Schema.define(version: 2020_07_21_111511) do
     t.string "product_name"
     t.string "location_name"
     t.string "location_address"
+    t.string "state"
   end
 
 end

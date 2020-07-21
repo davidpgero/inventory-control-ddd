@@ -4,6 +4,7 @@
 <span><%= @product.uid %></span>
 
 <h3>Stocks</h3>
+<h4>In stock: <%= @stock_product.quantity %></h4>
 
 <p><%= link_to 'Stock in', come_in_stock_path(@product.uid) %></p>
 
@@ -12,6 +13,7 @@
   <tr>
     <th colspan="3">Location</th>
     <th colspan="3">Quantity</th>
+    <th colspan="3">State</th>
     <th colspan="3">Actions</th>
   </tr>
   </thead>
@@ -21,6 +23,7 @@
     <tr>
       <td colspan="3"><strong><%= stock.location_name %></strong></td>
       <td colspan="3"><%= stock.quantity %></td>
+      <td colspan="3"><%= stock.state %></td>
       <td colspan="3">
         <%= link_to 'Stock Out', come_out_stock_path(@product.uid, location_id: stock.location_id, quantity: stock.quantity), method: :post %> |
         <%= link_to 'Adjust', adjust_stock_path(@product.uid, location_id: stock.location_id, quantity: stock.quantity) %> |
