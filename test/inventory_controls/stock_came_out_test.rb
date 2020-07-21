@@ -7,10 +7,10 @@ module InventoryControls
 
       location = ::Location.create(name: "test_location")
       product = ::Product.create(uid: SecureRandom.uuid, name: "test_product")
-      quantity = rand(100)
+      quantity = rand(1..100)
       product_id = product.uid
 
-      Stock.create(product_id: product_id, location_id: location.id, quantity: quantity)
+      event_store.publish(InventoryControlling::StockCameIn.new(data: { product_id: product_id, location_id: location.id, quantity: quantity }))
 
       assert_equal(Stock.count, 1)
       stock = Stock.find_by(product_id: product_id)

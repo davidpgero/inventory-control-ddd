@@ -17,6 +17,10 @@ Rails.configuration.to_prepare do
     store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockCameOut])
     store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockAdjusted])
     store.subscribe(InventoryControls::OnStockHandler, to: [InventoryControlling::StockTransferred])
+
+    store.subscribe(InventoryControls::OnProductStockHandler, to: [InventoryControlling::StockCameIn])
+    store.subscribe(InventoryControls::OnProductStockHandler, to: [InventoryControlling::StockCameOut])
+    store.subscribe(InventoryControls::OnProductStockHandler, to: [InventoryControlling::StockAdjusted])
   end
 
   Rails.configuration.command_bus.tap do |bus|

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_20_131626) do
+ActiveRecord::Schema.define(version: 2020_07_21_111511) do
 
   create_table "event_store_events", id: :string, limit: 36, force: :cascade do |t|
     t.string "event_type", null: false
@@ -31,9 +31,21 @@ ActiveRecord::Schema.define(version: 2020_07_20_131626) do
     t.index ["stream", "position"], name: "index_event_store_events_in_streams_on_stream_and_position", unique: true
   end
 
+  create_table "inventory_controls_product_stocks", force: :cascade do |t|
+    t.string "product_id"
+    t.integer "quantity", default: 0
+  end
+
   create_table "locations", force: :cascade do |t|
     t.string "name"
     t.string "address"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.string "uid"
+    t.string "product_id"
+    t.integer "quantity"
+    t.string "state"
   end
 
   create_table "products", force: :cascade do |t|
