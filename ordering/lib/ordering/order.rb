@@ -13,8 +13,8 @@ module Ordering
       apply OrderPlaced.new({ order_id: @id, product_id: product_id, quantity: quantity })
     end
 
-    def prepare
-      apply OrderPrepared.new({ order_id: @id })
+    def prepare(product_id)
+      apply OrderPrepared.new({ order_id: @id, product_id: product_id })
     end
 
     def leave

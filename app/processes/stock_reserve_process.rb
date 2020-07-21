@@ -8,10 +8,12 @@ class StockReserveProcess
   def call(event)
     case event
     when Ordering::OrderPlaced
+      @order_id = event.data.fetch(:order_id)
       @product_id = event.data.fetch(:product_id)
       @quantity = event.data.fetch(:quantity)
       reserve
     when InventoryControlling::ReserveAdditionalStock
+      @order_id = event.data.fetch(:order_id)
       @product_id = event.data.fetch(:product_id)
       @quantity = event.data.fetch(:quantity)
       reserve
@@ -27,7 +29,7 @@ class StockReserveProcess
       reserve_cmd = InventoryControlling::ReserveStock.new(product_id: @product_id, location_id: first_stock.location_id, quantity: @quantity)
       bus.(reserve_cmd)
 
-      prepare_cmd = Ordering::PrepareOrder.new(product_id: @product_id)
+      prepare_cmd = Ordering::PrepareOrder.new(order_id: @order_id, product_id: @product_id)
       bus.(prepare_cmd)
     end
 

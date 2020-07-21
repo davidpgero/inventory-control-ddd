@@ -32,9 +32,7 @@ Rails.configuration.to_prepare do
                     ]
     )
 
-    store.subscribe(Orders::OnOrderHandler, to: [Ordering::OrderPlaced])
-    store.subscribe(Orders::OnOrderHandler, to: [Ordering::OrderLeft])
-    store.subscribe(Orders::OnOrderHandler, to: [Ordering::OrderPrepared])
+    store.subscribe(Orders::OnOrderHandler, to: [Ordering::OrderPlaced, Ordering::OrderLeft, Ordering::OrderPrepared])
 
     store.subscribe(StockReserveProcess, to: [Ordering::OrderPlaced, InventoryControlling::ReserveAdditionalStock])
     store.subscribe(StockLeaveProcess, to: [Ordering::OrderPrepared])
