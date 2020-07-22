@@ -25,7 +25,7 @@ module Ordering
       published = act(stream, PrepareOrder.new(order_id: aggregate_id, product_id: product.uid))
       assert_changes(published, [
           OrderPrepared.new(data: {order_id: aggregate_id, product_id: product.uid}),
-          OrderLeft.new(data: {order_id: aggregate_id}),
+          OrderLeft.new(data: {order_id: aggregate_id, product_id: product.uid}),
       ])
     end
   end

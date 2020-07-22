@@ -22,7 +22,7 @@ module Ordering
       assert_changes(published, [
           OrderPlaced.new(data: {order_id: aggregate_id, product_id: product.uid, quantity: quantity}),
           OrderPrepared.new(data: {order_id: aggregate_id, product_id: product.uid}),
-          OrderLeft.new(data: {order_id: aggregate_id}),
+          OrderLeft.new(data: {order_id: aggregate_id, product_id: product.uid}),
       ])
     end
   end

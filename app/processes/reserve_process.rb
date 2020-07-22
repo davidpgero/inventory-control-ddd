@@ -1,4 +1,4 @@
-class StockReserveProcess
+class ReserveProcess
   def initialize(store: Rails.configuration.event_store,
                  bus: Rails.configuration.command_bus)
     @store = store
@@ -12,7 +12,7 @@ class StockReserveProcess
       @product_id = event.data.fetch(:product_id)
       @quantity = event.data.fetch(:quantity)
       reserve
-    when InventoryControlling::ReserveAdditionalStock
+    when InventoryControlling::AdditionalStockReserved
       @order_id = event.data.fetch(:order_id)
       @product_id = event.data.fetch(:product_id)
       @quantity = event.data.fetch(:quantity)
@@ -35,8 +35,8 @@ class StockReserveProcess
 
     if first_stock.quantity < @quantity
       new_quantity = @quantity - first_stock.quantity
-      reserve_cmd = InventoryControlling::ReserveStock.new(product_id: @product_id, location_id: first_stock.location_id, quantity: @quantity)
-      reserve_additional_cmd = InventoryControlling::ReserveAdditionalStock.new(product_id: @product_id, quantity: new_quantity)
+      reserve_cmd = InventoryControlling::ReserveStock.new(product_id: @product_id, location_id: first_stock.location_id, quantity: first_stock.quantity)
+      reserve_additional_cmd = InventoryControlling::ReserveAdditionalStock.new(order_id: @order_id, product_id: @product_id, quantity: new_quantity)
       bus.(reserve_cmd)
       bus.(reserve_additional_cmd)
     end
@@ -49,6 +49,9 @@ class StockReserveProcess
       bus.(adjust_cmd)
       bus.(come_in_cmd)
       bus.(reserve_cmd)
+
+      prepare_cmd = Ordering::PrepareOrder.new(order_id: @order_id, product_id: @product_id)
+      bus.(prepare_cmd)
     end
   end
 

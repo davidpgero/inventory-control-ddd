@@ -17,8 +17,8 @@ module Ordering
       apply OrderPrepared.new({ order_id: @id, product_id: product_id })
     end
 
-    def leave
-      apply OrderLeft.new({ order_id: @id })
+    def leave(product_id)
+      apply OrderLeft.new({ order_id: @id, product_id: product_id })
     end
 
     on OrderPlaced do |event|
@@ -29,11 +29,13 @@ module Ordering
     end
 
     on OrderPrepared do |event|
+      @product_id = event.data[:product_id]
       @new_state = :prepared
       order_prepared
     end
 
     on OrderLeft do |event|
+      @product_id = event.data[:product_id]
       @new_state = :left
       order_left
     end

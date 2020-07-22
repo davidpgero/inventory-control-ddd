@@ -46,8 +46,8 @@ module InventoryControlling
       apply StockLeft.new(data: { product_id: @id, location_id: location_id, quantity: quantity } )
     end
 
-    def reserve_additional(quantity)
-      apply AdditionalStockReserved.new(data: { product_id: @id, quantity: quantity } )
+    def reserve_additional(order_id, quantity)
+      apply AdditionalStockReserved.new(data: { product_id: @id, order_id: order_id, quantity: quantity } )
     end
 
     on StockCameIn do |event|
@@ -95,6 +95,7 @@ module InventoryControlling
 
     on AdditionalStockReserved do |event|
       @quantity = event.data[:quantity]
+      @order_id = event.data[:order_id]
       reserve_additional_stock
     end
 

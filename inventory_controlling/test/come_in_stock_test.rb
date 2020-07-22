@@ -10,7 +10,7 @@ module InventoryControlling
       location = ::Location.create(name: "test_location", address: "test_address")
       aggregate_id = SecureRandom.uuid
       product = ::Product.create(uid: aggregate_id, name: "test_product")
-      quantity = rand(100)
+      quantity = rand(1..100)
 
 
       stream = "InventoryControlling::Product$#{aggregate_id}"

@@ -4,7 +4,7 @@ module Ordering
 
     def call(command)
       with_aggregate(Order, command.aggregate_id) do |order|
-        order.leave
+        order.leave(command.product_id)
       end
     end
   end

@@ -12,6 +12,8 @@ module InventoryControls
         on_stock_transferred(event)
       when InventoryControlling::StockReserved
         on_stock_reserved(event)
+      when InventoryControlling::StockLeft
+        on_stock_left(event)
       else
         raise ArgumentError(event)
       end
@@ -70,6 +72,19 @@ module InventoryControls
         current_stock.destroy!
 
         new_stock = new_stock(product, location, quantity, :reserved)
+        new_stock.save!
+      end
+    end
+
+    def on_stock_left(event)
+      product = ::Product.find_by!(uid: event.data[:product_id])
+      location = ::Location.find_by!(id: event.data[:location_id])
+      quantity = event.data[:quantity]
+
+      with_current_stock(event) do |current_stock|
+        current_stock.destroy!
+
+        new_stock = new_stock(product, location, quantity, :left)
         new_stock.save!
       end
     end

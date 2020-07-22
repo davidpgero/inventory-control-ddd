@@ -19,7 +19,8 @@ Rails.configuration.to_prepare do
                         InventoryControlling::StockCameOut,
                         InventoryControlling::StockAdjusted,
                         InventoryControlling::StockTransferred,
-                        InventoryControlling::StockReserved
+                        InventoryControlling::StockReserved,
+                        InventoryControlling::StockLeft
                     ]
     )
 
@@ -34,8 +35,8 @@ Rails.configuration.to_prepare do
 
     store.subscribe(Orders::OnOrderHandler, to: [Ordering::OrderPlaced, Ordering::OrderLeft, Ordering::OrderPrepared])
 
-    store.subscribe(StockReserveProcess, to: [Ordering::OrderPlaced, InventoryControlling::ReserveAdditionalStock])
-    store.subscribe(StockLeaveProcess, to: [Ordering::OrderPrepared])
+    store.subscribe(ReserveProcess, to: [Ordering::OrderPlaced, InventoryControlling::AdditionalStockReserved])
+    store.subscribe(LeaveProcess, to: [Ordering::OrderPrepared, Ordering::OrderLeft])
   end
 
   Rails.configuration.command_bus.tap do |bus|
@@ -44,6 +45,8 @@ Rails.configuration.to_prepare do
     bus.register(InventoryControlling::AdjustStock, InventoryControlling::OnAdjustStock.new)
     bus.register(InventoryControlling::TransferStock, InventoryControlling::OnTransferStock.new)
     bus.register(InventoryControlling::ReserveStock, InventoryControlling::OnReserveStock.new)
+    bus.register(InventoryControlling::ReserveAdditionalStock, InventoryControlling::OnReserveAdditionalStock.new)
+    bus.register(InventoryControlling::LeaveStock, InventoryControlling::OnLeaveStock.new)
 
     bus.register(Ordering::PlaceOrder, Ordering::OnPlaceOrder.new)
     bus.register(Ordering::PrepareOrder, Ordering::OnPrepareOrder.new)
