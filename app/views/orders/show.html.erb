@@ -1,7 +1,8 @@
 <p id="notice"><%= notice %></p>
 
 <h2><%= @order.product_name %></h2>
-<span><%= @order.quantity %></span>
-<span><%= @order.uid %></span>
+<p><strong>Qty:</strong> <%= @order.quantity %></p>
+<p><strong>State:</strong> <%= @order.state %></p>
+<p><strong>UID:</strong> <%= @order.uid %></p>
 
 <%= link_to 'Back', orders_path %>

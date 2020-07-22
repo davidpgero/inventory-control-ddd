@@ -4,7 +4,7 @@ class OrdersController < ApplicationController
   end
 
   def show
-    @order = Order::Order.find_by_uid!(params[:id])
+    @order = Orders::Order.find_by_uid!(params[:id])
   end
 
   def new
