@@ -7,16 +7,20 @@
 <table>
   <thead>
   <tr>
-    <th colspan="3"></th>
+    <th colspan="6">Product Name</th>
+    <th colspan="3">Quantity</th>
+    <th colspan="3">State</th>
+    <th colspan="3">Actions</th>
   </tr>
   </thead>
 
   <tbody>
   <% @orders.each do |order| %>
     <tr>
-      <td><%= order.product_name %></td>
-      <td><%= order.quantity %></td>
-      <td><%= link_to 'Show', order_path(order.uid) %></td>
+      <td colspan="6"><%= order.product_name %></td>
+      <td colspan="3"><%= order.quantity %></td>
+      <td colspan="3"><%= order.state %></td>
+      <td colspan="3"><%= link_to 'Show', order_path(order.uid) %></td>
     </tr>
   <% end %>
   </tbody>
