@@ -8,8 +8,12 @@ GIT
       mutant (~> 0.9.0)
 
 GEM
-  remote: https://rubygems.org/
   remote: https://oss:7AXfeZdAfCqL1PvHm2nvDJO6Zd9UW8IK@gem.mutant.dev/
+  specs:
+    mutant-license (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
   specs:
     abstract_type (0.0.7)
     actioncable (5.2.4.3)
@@ -190,7 +194,6 @@ GEM
       procto (~> 0.0.2)
       unparser (~> 0.4.6)
       variable (~> 0.0.1)
-    mutant-license (0.1.0)
     nio4r (2.5.2)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
@@ -301,7 +304,7 @@ GEM
     turbolinks (5.2.1)
       turbolinks-source (~> 5.2)
     turbolinks-source (5.2.0)
-    tzinfo (1.2.7)
+    tzinfo (1.2.10)
       thread_safe (~> 0.1)
     uglifier (4.2.0)
       execjs (>= 0.3.0, < 3)
