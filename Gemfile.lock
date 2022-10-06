@@ -8,8 +8,12 @@ GIT
       mutant (~> 0.9.0)
 
 GEM
-  remote: https://rubygems.org/
   remote: https://oss:7AXfeZdAfCqL1PvHm2nvDJO6Zd9UW8IK@gem.mutant.dev/
+  specs:
+    mutant-license (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
   specs:
     abstract_type (0.0.7)
     actioncable (5.2.4.3)
@@ -58,8 +62,8 @@ GEM
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
-    addressable (2.7.0)
-      public_suffix (>= 2.0.2, < 5.0)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     aggregate_root (1.0.0)
       ruby_event_store (= 1.0.0)
     anima (0.3.1)
@@ -190,7 +194,6 @@ GEM
       procto (~> 0.0.2)
       unparser (~> 0.4.6)
       variable (~> 0.0.1)
-    mutant-license (0.1.0)
     nio4r (2.5.2)
     nokogiri (1.10.10)
       mini_portile2 (~> 2.4.0)
@@ -201,7 +204,7 @@ GEM
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    public_suffix (4.0.5)
+    public_suffix (5.0.0)
     puma (3.12.6)
     rack (2.2.3)
     rack-protection (2.0.8.1)
