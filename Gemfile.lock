@@ -8,8 +8,12 @@ GIT
       mutant (~> 0.9.0)
 
 GEM
-  remote: https://rubygems.org/
   remote: https://oss:7AXfeZdAfCqL1PvHm2nvDJO6Zd9UW8IK@gem.mutant.dev/
+  specs:
+    mutant-license (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
   specs:
     abstract_type (0.0.7)
     actioncable (5.2.4.3)
@@ -163,7 +167,7 @@ GEM
     method_source (1.0.0)
     mimemagic (0.3.5)
     mini_mime (1.0.2)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.8.0)
     minitest (5.14.1)
     mprelude (0.1.0)
       abstract_type (~> 0.0.7)
@@ -190,10 +194,10 @@ GEM
       procto (~> 0.0.2)
       unparser (~> 0.4.6)
       variable (~> 0.0.1)
-    mutant-license (0.1.0)
     nio4r (2.5.2)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.13.9)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     parser (2.7.0.5)
       ast (~> 2.4.0)
     pg (1.2.3)
@@ -203,6 +207,7 @@ GEM
       method_source (~> 1.0)
     public_suffix (4.0.5)
     puma (3.12.6)
+    racc (1.6.0)
     rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
